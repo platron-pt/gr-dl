@@ -48,7 +48,7 @@ switch (url) {
     result.fileName = fileName;
     downloadFile(url, "output/" + fileName).then(() => {
       writeFileSync("result.json", JSON.stringify(result, null, "  "));
-      writeFileSync("info.txt",`File Name: ${result.fileName}\nCompleted: ${result.completed}\nHTTP Status: ${result.httpStatus}`);
+      writeFileSync("info.txt",`*Since max size of each file is limited to 2 GiB, files will be splitted into 1 GiB per file.\nFile Name: ${result.fileName}\nCompleted: ${result.completed}\nHTTP Status: ${result.httpStatus}`);
     });
     break;
 }
