@@ -1,6 +1,6 @@
 const { https } = require("follow-redirects");
 const path = require("node:path");
-const { createWriteStream , writeFileSync} = require("node:fs");
+const { createWriteStream, writeFileSync } = require("node:fs");
 
 const result = {};
 
@@ -14,14 +14,14 @@ function downloadFile(url, dest) {
     const file = createWriteStream(dest);
     https.get(url, (res) => {
       if (res.statusCode !== 200) {
-        result.completed=false
+        result.completed = false;
         reject("error: " + res.statusCode);
       }
       result.httpStatus = res.statusCode;
       console.log(`Downloading from ${url}`);
       res.pipe(file);
       file.on("finish", () => {
-        result.completed=true
+        result.completed = true;
         resolve("Download completed");
       });
     });
@@ -32,25 +32,23 @@ const helpTxt = `usage: node ./index.js <url>`;
 
 const url = process.argv[2];
 
-
-
 switch (url) {
   case "help":
-    result.completed=true
-    result.httpStatus=null
-
+    result.completed = true;
+    result.httpStatus = null;
+    result.fileName = null;
     console.log(helpTxt);
-    writeFileSync("output/result.json", JSON.stringify(result,null,"  "));
+    writeFileSync("output/result.json", JSON.stringify(result, null, "  "));
     break;
   default:
     let fileName = "file";
     if (url2fileName(url) !== "") {
       fileName = url2fileName(url);
     }
-    console.log("output/" + fileName);
-    downloadFile(url, "output/" + fileName).then(()=>{
-      writeFileSync("output/result.json", JSON.stringify(result,null,"  "))}
-    );
+    result.fileName = fileName;
+    downloadFile(url, "output/" + fileName).then(() => {
+      writeFileSync("output/result.json", JSON.stringify(result, null, "  "));
+      writeFileSync("info.txt",`File Name: ${result.fileName}\nCompleted: ${result.completed}\nHTTP Status: ${result.httpStatus}`);
+    });
     break;
 }
-
