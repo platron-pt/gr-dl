@@ -42,5 +42,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: output/*,!output/.gitignore
           name: ${{env.date}} ${{github.event.inputs.file_url}}
-          tag: ${{env.date}}-${{github.event.inputs.file_url}}-${{github.run_number}}
+          tag: ${{github.run_id}}
           bodyFile: "${{ github.workspace}}/info.txt"
