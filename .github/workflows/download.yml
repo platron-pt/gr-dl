@@ -31,16 +31,19 @@ jobs:
       - name: Download file
         run: node ./downloader.js ${{github.event.inputs.file_url}}
 
-      - name: Get current date
-        id: date
+      - name: Compress and split file
         run: |
-          echo "{date}={$(date +'%Y-%m-%d')}" >> $GITHUB_STATE
+          cd output
+          zip -0 -r -s 1G file.zip *
+          shopt -s extglob
+          rm -- !(file*)
+           
 
       - name: Upload to GH releases
         uses: ncipollo/release-action@v1.8.6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: output/*,!output/.gitignore
-          name: ${{env.date}} ${{github.event.inputs.file_url}}
+          name: ${{github.event.inputs.file_url}}
           tag: ${{github.run_id}}
           bodyFile: "${{ github.workspace}}/info.txt"
