@@ -38,7 +38,7 @@ switch (url) {
     result.httpStatus = null;
     result.fileName = null;
     console.log(helpTxt);
-    writeFileSync("output/result.json", JSON.stringify(result, null, "  "));
+    writeFileSync("result.json", JSON.stringify(result, null, "  "));
     break;
   default:
     let fileName = "file";
@@ -47,7 +47,7 @@ switch (url) {
     }
     result.fileName = fileName;
     downloadFile(url, "output/" + fileName).then(() => {
-      writeFileSync("output/result.json", JSON.stringify(result, null, "  "));
+      writeFileSync("result.json", JSON.stringify(result, null, "  "));
       writeFileSync("info.txt",`File Name: ${result.fileName}\nCompleted: ${result.completed}\nHTTP Status: ${result.httpStatus}`);
     });
     break;
