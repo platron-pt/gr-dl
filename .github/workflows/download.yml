@@ -1,0 +1,46 @@
+name: "Download and save to github releases"
+
+on:
+  workflow_dispatch:
+    inputs:
+      file_url:
+        description: "Enter URL to download."
+        required: true
+
+jobs:
+  download:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Get source code
+        uses: actions/checkout@master
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+  
+      - name: Download file
+        run: node ./downloader.js ${{github.event.inputs.file_url}}
+
+      - name: Get current date
+        id: date
+        run: |
+          echo "{date}={$(date +'%Y-%m-%d')}" >> $GITHUB_STATE
+
+      - name: Upload to GH releases
+        uses: ncipollo/release-action@v1.8.6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: output/*,!output/.gitignore
+          name: ${{env.date}} ${{github.event.inputs.file_url}}
+          tag: ${{env.date}}-${{github.event.inputs.file_url}}-${{github.run_number}}
+          bodyFile: "${{ github.workspace}}/info.txt"
