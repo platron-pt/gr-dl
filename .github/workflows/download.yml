@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Install dependencies
-        run: apt-get install aria2 -y
+        run: sudo apt-get install aria2 -y
   
       - name: Download file
         run: node ./downloader.sh ${{github.event.inputs.file_url}}
