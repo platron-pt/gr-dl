@@ -18,9 +18,9 @@ jobs:
 
       - name: Install dependencies
         run: sudo apt-get install aria2 -y
-  
+
       - name: Download file
-        run: | 
+        run: |
           chmod +x ./download.sh
           ./download.sh ${{github.event.inputs.file_url}}
 
@@ -30,10 +30,9 @@ jobs:
           zip -0 -r -s 1G file.zip *
           shopt -s extglob
           rm -- !(file*)
-           
 
       - name: Upload to GH releases
-        uses: ncipollo/release-action@v1.8.6
+        uses: ncipollo/release-action@v1.13.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: output/*,!output/.gitignore
