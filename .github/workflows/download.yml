@@ -20,7 +20,7 @@ jobs:
         run: sudo apt-get install aria2 -y
   
       - name: Download file
-        run: sh ./download.sh ${{github.event.inputs.file_url}}
+        run: ./download.sh ${{github.event.inputs.file_url}}
 
       - name: Compress and split file
         run: |
