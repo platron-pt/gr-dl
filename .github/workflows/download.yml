@@ -12,9 +12,6 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
     steps:
       - name: Get source code
         uses: actions/checkout@master
