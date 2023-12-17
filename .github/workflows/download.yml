@@ -13,6 +13,9 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
+      - name: Maximize build disk space
+        uses: easimon/maximize-build-space@v10
+            
       - name: Get source code
         uses: actions/checkout@master
 
