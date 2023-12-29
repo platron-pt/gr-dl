@@ -9,7 +9,7 @@ function failed(){
 }
 cd download
 
-aria2c $1
+aria2c $1 -x 16
 
 if [ "$?" -eq "0" ]
 then
